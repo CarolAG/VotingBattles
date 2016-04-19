@@ -22,10 +22,16 @@ export function next (state) {
     vote: Map({pair: entries.take(2)}),
     entries: entries.skip(2)
   }))
-  return state.merge({
-    vote: Map({pair: entries.take(2)}),
-    entries: entries.skip(2)
-  })
+  if (entries.size === 1) {
+    state.remove('vote')
+         .remove('entries')
+         .set('winner', entries.first())
+  } else {
+    return state.merge({
+      vote: Map({pair: entries.take(2)}),
+      entries: entries.skip(2)
+    })
+  }
 }
 
 export function vote (state, entry) {
