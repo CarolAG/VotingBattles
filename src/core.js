@@ -34,10 +34,10 @@ export function next (state) {
   }
 }
 
-export function vote (state, entry) {
-  return state.updateIn(
+export function vote (voteState, entry) {
+  return voteState.updateIn(
     // updateIn "Returns a new Map having applied the updater to the entry found at the keyPath."
-    ['vote', 'tally', entry],
+    ['tally', entry],
     0,
     tally => tally + 1
   )
