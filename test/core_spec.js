@@ -1,7 +1,7 @@
 import {List, Map} from 'immutable'
 import {expect} from 'chai'
 
-import {setEntries, next} from '../src/core'
+import {setEntries, next, vote} from '../src/core'
 
 describe ('application logic', () => {
   describe ( 'setEntries', () => {
@@ -71,14 +71,14 @@ describe ('application logic', () => {
       expect(nextState).to.equal(Map({
         vote: Map({
           pair:List.of('Sunshine', 'Millions')
-        })
+        }),
         entries: List.of('127 Hours', 'Trainspotting', '28 Days Later')
       }))
     })
     it('marks winner when just one entry left', () => {
       const state = Map({
         vote: Map({
-          pair: List.of('Trainspotting', '28 Days Later')
+          pair: List.of('Trainspotting', '28 Days Later'),
           tally: Map({
             'Trainspotting': 4,
             '28 Days Later': 2
@@ -87,13 +87,13 @@ describe ('application logic', () => {
         entries: List()
       })
       const nextState = next(state)
-      expect nextState.to.equal(Map({
+      expect(nextState).to.equal(Map({
         winner: 'Trainspotting'
       }))
     })
 
   })
-  
+
   describe('vote', () => {
     it('creates a tally for the voted entry', () => {
       const state = Map({
@@ -103,7 +103,7 @@ describe ('application logic', () => {
         entries: List()
       })
       const nextState = vote(state, 'Trainspotting')
-      expect(nextState).to.equal{Map({
+      expect(nextState).to.equal(Map({
         vote: Map({
           pair:List.of('Trainspotting', '28 Days Later'),
           tally: Map({
@@ -111,14 +111,13 @@ describe ('application logic', () => {
           })
         }),
         entries: List()
-      })
-      }
+      }))
     })
     it('adds to existing tally for the voted entry', () => {
       const state = Map({
         vote: Map({
           pair: List.of('Trainspotting', '28 Days Later'),
-          tally:Map({
+          tally: Map({
             'Trainspotting': 3,
             '28 Days Later': 2
           })

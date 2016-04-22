@@ -1,7 +1,7 @@
 import {List, Map} from 'immutable'
 
 export function setEntries (state, entries) {
-  console.log('using .set', state.set('entries', entries))
+  //console.log('using .set', state.set('entries', entries))
   return state.set('entries', List(entries))
 }
 
@@ -18,12 +18,12 @@ function getWinners(vote){
 export function next (state) {
   const entries = state.get('entries')
                        .concat(getWinners(state.get('vote')))
-  console.log('is this the new state, the next?', state.merge({
-    vote: Map({pair: entries.take(2)}),
-    entries: entries.skip(2)
-  }))
+  // console.log('state', state.merge({
+  //   vote: Map({pair: entries.take(2)}),
+  //   entries: entries.skip(2)
+  // }))
   if (entries.size === 1) {
-    state.remove('vote')
+    return state.remove('vote')
          .remove('entries')
          .set('winner', entries.first())
   } else {
@@ -36,6 +36,7 @@ export function next (state) {
 
 export function vote (state, entry) {
   return state.updateIn(
+    // updateIn "Returns a new Map having applied the updater to the entry found at the keyPath."
     ['vote', 'tally', entry],
     0,
     tally => tally + 1
