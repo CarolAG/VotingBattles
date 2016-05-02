@@ -9,5 +9,9 @@ export default function startServer(store) {
 
   io.on('connection', (socket) => {
     socket.emit('state', store.getState().toJS());
+    socket.on('action', store.dispatch.bind(store))
+    // actions are just JS
+    // if I design an authentication mechanism later it should be inserted here
+    // to verify who's submitting an action obj
   });
 }
